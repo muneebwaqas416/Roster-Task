@@ -1,0 +1,26 @@
+{
+  "name": "roster-task",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/muneebwaqas416/Roster-Task.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/muneebwaqas416/Roster-Task/issues"
+  },
+  "homepage": "https://github.com/muneebwaqas416/Roster-Task#readme",
+  "description": "",
+  "dependencies": {
+    "csv-writer": "^1.6.0",
+    "dotenv": "^17.2.3",
+    "json2csv": "^6.0.0-alpha.2",
+    "puppeteer": "^24.23.0"
+  }
+}
