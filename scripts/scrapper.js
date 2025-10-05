@@ -1,7 +1,6 @@
 const puppeteer = require("puppeteer");
 const loginCollabstr = require("./login");
 const saveToCSV = require("./savetoCSV");
-const validateProfiles = require("./validateProfile");
 
 async function scrapeCollabstr(roleType, maxProfiles = 50) {
   const browser = await puppeteer.launch({
@@ -68,7 +67,7 @@ async function scrapeCollabstr(roleType, maxProfiles = 50) {
     });
 
     if (nextHref) {
-      console.log("➡️ Going to next page:", nextHref);
+      console.log("Going to next page:", nextHref);
       await page.goto(nextHref, { waitUntil: "networkidle2" });
     } else {
       keepGoing = false;
@@ -81,7 +80,6 @@ async function scrapeCollabstr(roleType, maxProfiles = 50) {
   for (let i = 0; i < profilesArray.length; i++) {
     const p = profilesArray[i];
 
-    // ✅ Only open the profile if role is incomplete or contains "..."
     if (!p.role || p.role.includes("…") || p.role.includes("...")) {
       try {
         const profilePage = await browser.newPage();
@@ -95,21 +93,17 @@ async function scrapeCollabstr(roleType, maxProfiles = 50) {
         p.role = fullRole;
         await profilePage.close();
 
-        console.log(`🔁 [${i + 1}/${profilesArray.length}] Fixed role: ${p.name} → ${p.role}`);
+        console.log(`[${i + 1}/${profilesArray.length}] Fixed role: ${p.name} → ${p.role}`);
         await new Promise((r) => setTimeout(r, 800));
       } catch (err) {
-        console.warn(`⚠️ Could not fetch full role for ${p.profileLink}: ${err.message}`);
+        console.warn(`Could not fetch full role for ${p.profileLink}: ${err.message}`);
       }
     } else {
-      console.log(`✅ [${i + 1}/${profilesArray.length}] Role already complete: ${p.role}`);
+      console.log(`[${i + 1}/${profilesArray.length}] Role already complete: ${p.role}`);
     }
   }
 
   await browser.close();
-
-  // Optional: URL validation
-  // const validProfiles = await validateProfiles(profilesArray);
-
   return profilesArray.slice(0, maxProfiles);
 }
 
@@ -118,9 +112,9 @@ async function scrapeCollabstr(roleType, maxProfiles = 50) {
   const maxProfiles = 50;
 
   for (const role of roleTypes) {
-    console.log(`\n🔎 Scraping role: ${role}`);
+    console.log(`\nScraping role: ${role}`);
     const result = await scrapeCollabstr(role, maxProfiles);
-    console.log(`✅ ${role}: ${result.length} profiles fetched with full role titles`);
+    console.log(`${role}: ${result.length} profiles fetched with full role titles`);
     saveToCSV(result, role);
   }
 })();

@@ -3,9 +3,8 @@ require("dotenv").config();
 async function loginCollabstr(page) {
   const email = process.env.COLLABSTR_EMAIL;
   const password = process.env.COLLABSTR_PASSWORD;
-  console.log(email, password);
   if (!email || !password) {
-    throw new Error("❌ Missing credentials in .env file");
+    throw new Error("Missing credentials in .env file");
   }
 
   await page.goto("https://collabstr.com/login", { waitUntil: "networkidle2" });
@@ -18,7 +17,7 @@ async function loginCollabstr(page) {
     page.waitForNavigation({ waitUntil: "networkidle2" }),
   ]);
 
-  console.log("✅ Logged in successfully!");
+  console.log("Logged in successfully!");
 }
 
 module.exports = loginCollabstr;
